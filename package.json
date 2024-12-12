@@ -1,0 +1,16 @@
+{
+  "name": "brainstormer",
+  "version": "1.0.0",
+  "description": "Assistant Wizard Application",
+  "main": "assistantWizard.js",
+  "type": "module",
+  "scripts": {
+    "start": "vite"
+  },
+  "dependencies": {
+    "@millisai/web-sdk": "^1.0.0"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
+  }
+}

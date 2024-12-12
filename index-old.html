@@ -1,0 +1,116 @@
+<html>
+  <head>
+    <title>Personal Assistant Creator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://cdn.millis.ai/web-sdk.js"></script>
+    <script>
+      const PUBLIC_KEY = 'Qbh4QJJqS81XzziPb3n13DcguVVo3T9G';
+      
+      function nextStep(currentStep) {
+        document.getElementById(`step${currentStep}`).classList.remove('active');
+        document.getElementById(`step${currentStep + 1}`).classList.add('active');
+      }
+
+      function createAssistant() {
+        const name = document.getElementById('assistantName').value;
+        const personality = document.getElementById('assistantPersonality').value;
+
+        try {
+          // Show the embedded assistant
+          document.querySelector('.wizard-container').style.display = 'none';
+          const assistantContainer = document.getElementById('assistantEmbed');
+          assistantContainer.style.display = 'block';
+          document.getElementById('assistantTitle').textContent = `Your Assistant: ${name}`;
+          
+          // Set up the iframe with the embedded agent and configuration
+          const iframe = assistantContainer.querySelector('iframe');
+          const params = new URLSearchParams({
+            id: '-OD8dpmWclouYTt3eaEm',
+            k: PUBLIC_KEY,
+            name: name,
+            prompt: personality
+          });
+          iframe.src = `https://app.millis.ai/agents/embedded?${params.toString()}`;
+        } catch (error) {
+          alert('Error creating assistant: ' + error.message);
+        }
+      }
+    </script>
+    <style>
+      html, body {
+        margin: 0;
+        padding: 20px;
+        width: 100%;
+        height: 100%;
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+      }
+      .wizard-container {
+        max-width: 600px;
+        margin: 0 auto;
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      }
+      .step {
+        display: none;
+      }
+      .step.active {
+        display: block;
+      }
+      input[type="text"], textarea {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+      button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 10px;
+      }
+      button:hover {
+        background-color: #0056b3;
+      }
+      .assistant-container {
+        display: none;
+        height: 80vh;
+        margin-top: 20px;
+      }
+      .assistant-container iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wizard-container">
+      <div id="step1" class="step active">
+        <h2>Name Your Assistant</h2>
+        <p>What would you like to call your AI assistant?</p>
+        <input type="text" id="assistantName" placeholder="Enter assistant name">
+        <button onclick="nextStep(1)">Next</button>
+      </div>
+
+      <div id="step2" class="step">
+        <h2>Define Assistant's Personality</h2>
+        <p>Describe how your assistant should behave and interact:</p>
+        <textarea id="assistantPersonality" rows="6" placeholder="Example: You are a friendly and professional assistant who..."></textarea>
+        <button onclick="createAssistant()">Create Assistant</button>
+      </div>
+    </div>
+
+    <div id="assistantEmbed" class="assistant-container">
+      <h3 id="assistantTitle"></h3>
+      <iframe allow="microphone"></iframe>
+    </div>
+  </body>
+</html>
